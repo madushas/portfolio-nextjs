@@ -95,7 +95,7 @@ export default function NavBar() {
                 : "block rounded-full px-4 py-2 opacity-100"
             )}
           >
-            <Link href="/">://madusha</Link>
+            <Link href="/" aria-label="Home">://madusha</Link>
           </m.h3>
 
           {/* Navigation Items */}
@@ -122,6 +122,7 @@ export default function NavBar() {
                       : "hover:text-accent-foreground"
                   )}
                   href={item.path}
+                  aria-label={item.name}
                   onClick={scrollToView}
                   onMouseOver={() => setActivePath(item.path)}
                   onMouseLeave={handleScroll}

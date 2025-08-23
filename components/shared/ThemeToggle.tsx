@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useAppStore } from "@/lib/stores/useAppStore";
 import { Button } from "../ui/button";
 import { m, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -11,20 +12,24 @@ export function ThemeToggle({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const { theme, setTheme } = useTheme();
-  const [isDarkMode, setIsDarkMode] = React.useState(false);
+  // Zustand global theme state
+  const zustandTheme = useAppStore((state) => state.theme);
+  const setZustandTheme = useAppStore((state) => state.setTheme);
+  const { setTheme } = useTheme();
+  const [isDarkMode, setIsDarkMode] = React.useState(zustandTheme === "dark");
   const [mounted, setMounted] = React.useState(false);
 
   const toggleTheme = () => {
     const newTheme = isDarkMode ? "light" : "dark";
     setTheme(newTheme);
+    setZustandTheme(newTheme);
     setIsDarkMode(!isDarkMode);
   };
 
   React.useEffect(() => {
     setMounted(true);
-    setIsDarkMode(theme === "dark");
-  }, [theme]);
+    setIsDarkMode(zustandTheme === "dark");
+  }, [zustandTheme]);
 
   // Render nothing on the server, and the full UI only on the client
   if (!mounted) {
@@ -37,6 +42,7 @@ export function ThemeToggle({
         variant="secondary"
         className="border-border bg-card hover:bg-accent rounded-full border p-2 duration-200"
         onClick={toggleTheme}
+        aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
       >
         <AnimatePresence mode="wait" initial={false}>
           {isDarkMode ? (

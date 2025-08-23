@@ -1,5 +1,6 @@
 import OfflineBanner from "../components/shared/OfflineBanner";
 import { useOnlineStatus } from "../lib/utils";
+import LoadingOverlay from "@/components/shared/LoadingOverlay";
 // This is the root layout component for your Next.js app.
 // Learn more: https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#root-layout-required
 
@@ -37,11 +38,25 @@ export default function RootLayout({
             "w-full overflow-x-hidden transition-colors duration-700",
           )}
         >
+          {/* Accessibility: Skip to main content link */}
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary text-primary-foreground px-4 py-2 rounded z-50"
+          >
+            Skip to main content
+          </a>
+          {/* Accessibility: Aria-live region for alerts/messages */}
+          <div aria-live="polite" className="sr-only" id="alert-region"></div>
+            {/* Global loading overlay */}
+            <LoadingOverlay />
           <ThemeProvider attribute="class" defaultTheme="system">
             <FramerMotionProvider>
               <ClientErrorBoundary>
                 <OfflineBanner />
-                {children}
+                {/* Main content anchor for skip link and semantic landmark */}
+                <main id="main-content">
+                  {children}
+                </main>
               </ClientErrorBoundary>
               <Footer />
             </FramerMotionProvider>

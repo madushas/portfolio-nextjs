@@ -107,6 +107,9 @@ importers:
       zod:
         specifier: ^4.1.0
         version: 4.1.0
+      zustand:
+        specifier: ^5.0.8
+        version: 5.0.8(@types/react@19.1.11)(immer@10.1.1)(react@19.1.1)(use-sync-external-store@1.5.0(react@19.1.1))
     devDependencies:
       '@next/bundle-analyzer':
         specifier: ^15.5.0

@@ -130,6 +130,7 @@ function FormComponent() {
                   <Input
                     placeholder="Your name"
                     className="transition-all focus:ring-2 focus:ring-primary/20"
+                    aria-label="Name"
                     {...field}
                   />
                 </FormControl>
@@ -147,6 +148,7 @@ function FormComponent() {
                   <Input
                     placeholder="yourname@gmail.com"
                     className="transition-all focus:ring-2 focus:ring-primary/20"
+                    aria-label="Email"
                     {...field}
                   />
                 </FormControl>
@@ -164,6 +166,7 @@ function FormComponent() {
                   <Input
                     placeholder="Phone"
                     className="transition-all focus:ring-2 focus:ring-primary/20"
+                    aria-label="Phone"
                     {...field}
                   />
                 </FormControl>
@@ -182,6 +185,7 @@ function FormComponent() {
                 <Textarea
                   placeholder="Message"
                   className="transition-all focus:ring-2 focus:ring-primary/20"
+                  aria-label="Message"
                   {...field}
                 />
               </FormControl>
@@ -193,6 +197,7 @@ function FormComponent() {
           type="submit"
           disabled={status === contactStatuses.loading}
           className="w-full transition-all hover:scale-105"
+          aria-label="Send Message"
         >
           {status === contactStatuses.loading ? (
             <span className="flex gap-2">

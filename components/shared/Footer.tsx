@@ -39,6 +39,7 @@ export default function Footer(props: Readonly<HTMLProps<HTMLDivElement>>) {
               href={item.href}
               className="text-card-foreground hover:text-accent-foreground transform rounded-full p-2 transition duration-100 hover:scale-110 hover:bg-slate-200 dark:hover:bg-slate-700"
               target="_blank"
+              aria-label={item.name}
             >
               <span className="sr-only">{item.name}</span>
               <item.icon className="h-6 w-6" aria-hidden="true" />
