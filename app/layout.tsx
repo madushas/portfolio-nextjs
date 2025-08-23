@@ -1,3 +1,5 @@
+import OfflineBanner from "../components/shared/OfflineBanner";
+import { useOnlineStatus } from "../lib/utils";
 // This is the root layout component for your Next.js app.
 // Learn more: https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#root-layout-required
 
@@ -22,7 +24,7 @@ const chivo = Chivo({
   variable: "--font-chivo",
 });
 
-export default function Layout({
+export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
@@ -38,6 +40,7 @@ export default function Layout({
           <ThemeProvider attribute="class" defaultTheme="system">
             <FramerMotionProvider>
               <ClientErrorBoundary>
+                <OfflineBanner />
                 {children}
               </ClientErrorBoundary>
               <Footer />

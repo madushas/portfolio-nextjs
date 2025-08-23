@@ -26,6 +26,11 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Textarea } from "../ui/textarea";
 import { WEB3FORM_ACCESS_KEY } from "@/lib/env";
+import { handleApiError, retryFetch } from "@/lib/api";
+
+import Spinner from "../shared/Spinner";
+import ErrorMessage from "../shared/ErrorMessage";
+import { useOnlineStatus } from "../../lib/utils";
 import SectionContainer from "../shared/SectionContainer";
 
 
@@ -85,7 +90,7 @@ function FormComponent() {
       formData.append("message", form.getValues("message"));
       formData.append("access_key", WEB3FORM_ACCESS_KEY);
 
-      const response = await fetch("https://api.web3forms.com/submit", {
+      const response = await retryFetch("https://api.web3forms.com/submit", {
         method: "POST",
         body: formData,
       });
@@ -102,7 +107,8 @@ function FormComponent() {
         throw new Error(result.message || "Form submission failed");
       }
     } catch (error) {
-      console.error("Form submission error:", error);
+      const apiError = handleApiError(error);
+      console.error("Form submission error:", apiError);
       setStatus(contactStatuses.error);
     }
   };

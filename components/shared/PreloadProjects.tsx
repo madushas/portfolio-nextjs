@@ -1,18 +1,18 @@
 import { ProjectType } from "@/data/projects";
-import { useEffect } from "react";
+// import removed, handled by React import below
+import React, { useEffect, useState } from "react";
+import Spinner from "./Spinner";
+import ErrorMessage from "./ErrorMessage";
+import { useOnlineStatus } from "../../lib/utils";
+import { handleApiError, retryFetch } from "@/lib/api";
 
 export default function PreloadProjects({
   projects,
 }: Readonly<{ projects: ProjectType[] }>) {
-  useEffect(() => {
-    projects.forEach(({ demoLink }) => {
-      if (demoLink) {
-        fetch(demoLink, { mode: "no-cors" }).catch(() => {
-          console.error(`Failed to preload project: ${demoLink}`);
-        });
-      }
-    });
-  }, [projects]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const isOnline = useOnlineStatus();
 
-  return <></>;
+  // No preloading needed for Vercel-hosted projects
+  return null;
 }

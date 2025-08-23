@@ -1,3 +1,21 @@
+import React from "react";
+/**
+ * React hook to detect online/offline status.
+ */
+export function useOnlineStatus(): boolean {
+  const [isOnline, setIsOnline] = React.useState(typeof window !== 'undefined' ? window.navigator.onLine : true);
+  React.useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+  return isOnline;
+}
 
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
