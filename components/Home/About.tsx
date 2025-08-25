@@ -10,7 +10,7 @@ const stats = [
   { label: "Coding Since", value: "2013" },
   { label: "Completed Projects", value: "8+" },
   { label: "Satisfied Clients", value: "6+" },
-  { label: "Certifications", value: <Certificates /> },
+  { label: "Professional Certifications", value: <Certificates /> },
 ];
 
 export default function About(
@@ -66,40 +66,33 @@ export default function About(
             </m.svg>
           </m.div>
           <div className="relative mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:max-w-none lg:px-0 lg:py-16">
-            <div className="relative mx-auto mb-16 overflow-hidden rounded-2xl pt-64 shadow-xl md:mx-4">
+            <div className="relative mx-auto mb-16 aspect-[4/5] overflow-hidden rounded-2xl shadow-xl md:mx-4">
               <Image
                 className="absolute inset-0 h-full w-full object-cover object-center"
                 src={MyImage}
                 alt="Profile picture"
-                width={400}
-                height={400}
+                fill
                 priority
               />
-              <div className="bg-primary absolute inset-0 mix-blend-multiply" />
+              <div className="bg-primary absolute inset-0 mix-blend-multiply opacity-80" />
               <div className="absolute inset-0 bg-linear-to-t from-slate-600 via-slate-600 opacity-70 dark:from-slate-800 dark:via-slate-800" />
-              <div className="relative px-8 pt-16 md:pt-0">
+              <div className="absolute right-0 bottom-0 left-0 z-10 px-8 pb-8">
                 <div className="flex items-center text-white">
                   <MapPin className="h-8 w-8" />
                   Colombo, Sri Lanka
                 </div>
-                <blockquote className="my-8">
+                <blockquote className="my-4">
                   <div className="relative text-lg font-medium text-white md:grow">
                     <p className="relative text-white">
-                      I am a research student based in Colombo, Sri Lanka. I
-                      have a strong background in computer science and a deep
-                      interest in artificial intelligence and cloud
-                      technologies. My career goal spans both academia and
-                      industry, where I aim to contribute to the development of
-                      cutting-edge technologies and solutions that address
-                      real-world problems.
+                      Building things for the web started as a curiosity. It’s
+                      become my way of exploring ideas and solving puzzles.
+                      Every project is a new story, a chance to turn imagination
+                      into something real and useful.
                     </p>
                   </div>
-                  <footer className="mt-4">
-                    <p className="text-base text-slate-100">
-                      <span className="font-semibold">
-                        Madusha Sandaruwan,{" "}
-                      </span>
-                      Computer Science Undergraduate
+                  <footer className="mt-2">
+                    <p className="text-base font-semibold text-slate-100">
+                      Madusha Sandaruwan
                     </p>
                   </footer>
                 </blockquote>
@@ -114,17 +107,21 @@ export default function About(
             </h2>
             <div className="text-accent-foreground mt-6 space-y-6">
               <p className="text-base leading-7">
-                My interests extend beyond the technical realm to include
-                history, philosophy, literature, and personal development. I am
-                dedicated to sustainability and fairness, and I am driven by a
-                commitment to integrity, compassion, and innovation.
+                Long before I wrote my first line of code, I was lost in books
+                about history and philosophy. I didn't know it then, but they
+                were teaching me about systems, how small decisions can lead to
+                huge consequences, and how the strongest empires, arguments, and
+                structures are always built on a solid foundation.
               </p>
               <p className="text-base leading-7">
-                I am always eager to learn and grow, seeking new challenges that
-                allow me to apply my skills and knowledge to make a positive
-                impact. Whether working on software development projects or
-                exploring the depths of the human mind and environmental issues,
-                I strive to excel in all my endeavors.
+                When I discovered programming, it felt strangely familiar. Here
+                was another way to build worlds, to design systems with their
+                own rules and logic. That’s the perspective I bring to my work
+                today. I care about architecture and design because I know that
+                strong foundations are what allow things to grow and last. For
+                me, the most interesting challenges are the ones that require
+                not just technical skill, but a deep and curious look at the
+                problem itself.
               </p>
             </div>
           </div>

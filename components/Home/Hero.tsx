@@ -49,7 +49,7 @@ export default function Hero(props: Readonly<HTMLProps<HTMLDivElement>>) {
       className="relative z-10 flex min-h-screen items-center justify-center px-4"
       {...props}
     >
-  <m.div
+      <m.div
         style={{ y: y1 }}
         className="container mx-auto flex flex-col items-center justify-between gap-12 px-4 md:flex-row md:px-6"
       >
@@ -82,7 +82,7 @@ export default function Hero(props: Readonly<HTMLProps<HTMLDivElement>>) {
                 Madusha Sandaruwan
               </h1>
               <div className="text-foreground/80 text-2xl font-semibold md:text-3xl lg:text-4xl">
-                Full-Stack Developer
+                Software Engineer (Systems & Architecture)
               </div>
             </div>
           </m.div>
@@ -94,9 +94,10 @@ export default function Hero(props: Readonly<HTMLProps<HTMLDivElement>>) {
             transition={{ delay: 0.4, duration: 0.6 }}
             className="text-muted-foreground text-lg leading-relaxed"
           >
-            I craft modern, scalable web applications with cutting-edge
-            technologies. From concept to deployment, I bring ideas to life with
-            clean code and exceptional user experiences.
+            I build robust, scalable software by bridging foundational
+            architecture with modern technology. My focus is on creating clean,
+            maintainable systems that solve complex problems from first
+            principles.
           </m.p>
 
           {/* CTA Buttons */}
@@ -151,7 +152,7 @@ export default function Hero(props: Readonly<HTMLProps<HTMLDivElement>>) {
         </div>
 
         {/* Image Section */}
-  <m.div
+        <m.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.5, duration: 0.8 }}
@@ -160,9 +161,9 @@ export default function Hero(props: Readonly<HTMLProps<HTMLDivElement>>) {
           <div className="relative">
             {/* Decorative elements */}
             <div className="from-primary/20 absolute -inset-4 aspect-square rounded-full bg-gradient-to-r to-purple-500/20 blur-2xl" />
-            <div className="border-background  w-fit h-fit relative overflow-hidden aspect-square rounded-full border-4 shadow-2xl">
+            <div className="border-background relative aspect-square h-fit w-fit overflow-hidden rounded-full border-4 shadow-2xl">
               {/* add image overlay to add modern look */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary/20 to-purple-500/20 opacity-50 transition-opacity duration-500 hover:opacity-70" />
+              <div className="from-primary/20 absolute inset-0 rounded-full bg-gradient-to-r to-purple-500/20 opacity-50 transition-opacity duration-500 hover:opacity-70" />
               <Image
                 src={HeroImage}
                 width={500}
@@ -193,8 +194,8 @@ export default function Hero(props: Readonly<HTMLProps<HTMLDivElement>>) {
               <div className="text-sm font-semibold">⚡ .NET Expert</div>
             </m.div>
           </div>
-  </m.div>
-  </m.div>
+        </m.div>
+      </m.div>
     </section>
   );
 }

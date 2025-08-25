@@ -192,7 +192,7 @@ export function BlogNavBar() {
             Home
           </Link>
           <Link
-            className="relative hidden rounded-full px-4 py-2 text-sm font-semibold no-underline duration-300 ease-in md:block lg:text-base text-primary font-bold"
+            className="relative hidden rounded-full px-4 py-2 text-sm font-semibold no-underline duration-300 ease-in md:block lg:text-base text-primary"
             href="/blog"
           >
             <span>Blog</span>
