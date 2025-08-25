@@ -11,6 +11,7 @@ import Link from "next/link";
 import { SiGithub } from "react-icons/si";
 import { m } from "framer-motion";
 import { SanityImage } from "../shared/SanityImage";
+import Image from "next/image";
 
 export default function ProjectCard({
   title,
@@ -39,8 +40,15 @@ export default function ProjectCard({
         {typeof image === "object" && "asset" in image ? (
           <SanityImage asset={image.asset} alt={title} />
         ) : (
-          // Optionally handle StaticImageData, e.g.:
-          <img src={image.src} alt={title} />
+          <Image
+            src={image.src}
+            alt={title}
+            width={400}
+            height={300}
+            className="w-full h-auto object-cover rounded-lg"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority={index < 2}
+          />
         )}
         <div className="m-4 flex flex-wrap gap-2">
           {tags.map((tag) => (

@@ -1,5 +1,4 @@
 import OfflineBanner from "../components/shared/OfflineBanner";
-import { useOnlineStatus } from "../lib/utils";
 import LoadingOverlay from "@/components/shared/LoadingOverlay";
 // This is the root layout component for your Next.js app.
 // Learn more: https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#root-layout-required

@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { useOnlineStatus } from "../../lib/utils";
+import { useOnlineStatus } from "../../lib/hooks/useOnlineStatus";
 
 export default function OfflineBanner() {
   const isOnline = useOnlineStatus();

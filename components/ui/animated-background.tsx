@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { usePrefersReducedMotion } from "@/lib/utils";
+import { usePrefersReducedMotion } from "@/lib/hooks/usePrefersReducedMotion";
 import { m, RepeatType, easeInOut } from "framer-motion";
 
 type SpotlightProps = {

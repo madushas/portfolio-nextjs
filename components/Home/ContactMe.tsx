@@ -28,9 +28,7 @@ import { Textarea } from "../ui/textarea";
 import { WEB3FORM_ACCESS_KEY } from "@/lib/env";
 import { handleApiError, retryFetch } from "@/lib/api";
 
-import Spinner from "../shared/Spinner";
-import ErrorMessage from "../shared/ErrorMessage";
-import { useOnlineStatus } from "../../lib/utils";
+
 import SectionContainer from "../shared/SectionContainer";
 
 
@@ -57,7 +55,7 @@ function FormComponent() {
 
   const FormSchema = z.object({
     name: z.string().min(1),
-    email: z.string().email().min(1),
+    email: z.string().email({ message: "Invalid email address" }).min(1),
     phone: z.string().min(1),
     message: z.string().min(1),
   });
