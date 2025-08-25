@@ -1,8 +1,5 @@
 import OfflineBanner from "../components/shared/OfflineBanner";
 import LoadingOverlay from "@/components/shared/LoadingOverlay";
-// This is the root layout component for your Next.js app.
-// Learn more: https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#root-layout-required
-
 import { IBM_Plex_Sans, Chivo } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/shared/ThemeProvider";
@@ -30,6 +27,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <CSPostHogProvider>
+        <head>
+          <link rel="preload" as="image" href="/images/profile.webp" />
+        </head>
         <body
           className={cn(
             ibm_plex_sans.className,

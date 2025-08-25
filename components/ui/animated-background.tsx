@@ -34,7 +34,7 @@ const Spotlight = ({
     >
       {/* Left gradients */}
       <m.div className="pointer-events-none absolute inset-0 z-30">
-        <div className="pointer-events-none absolute inset-0 bg-[url('/images/bg-noise.png')] opacity-5" />
+        <div className="pointer-events-none absolute inset-0 bg-noise opacity-5" />
       </m.div>
 
       <m.div
@@ -49,7 +49,7 @@ const Spotlight = ({
             width,
             height: 1380,
             background:
-              "radial-gradient(70% 70% at 55% 30%, hsla(194,82%,35%,0.1), transparent 80%)",
+              "radial-gradient(70% 70% at 55% 30%, hsl(var(--primary) / 0.08), transparent 80%)",
           }}
         />
         <div
@@ -59,7 +59,7 @@ const Spotlight = ({
             width: smallWidth,
             height: 1380,
             background:
-              "radial-gradient(60% 60% at 50% 50%, hsla(270,60%,55%,0.06), transparent 100%)",
+              "radial-gradient(60% 60% at 50% 50%, hsl(var(--accent) / 0.07), transparent 100%)",
           }}
         />
       </m.div>
@@ -77,7 +77,7 @@ const Spotlight = ({
             width,
             height: 1380,
             background:
-              "radial-gradient(70% 70% at 55% 30%, hsla(194,82%,35%,0.1), transparent 80%)",
+              "radial-gradient(70% 70% at 55% 30%, hsl(var(--primary) / 0.08), transparent 80%)",
           }}
         />
         <div
@@ -87,7 +87,7 @@ const Spotlight = ({
             width: smallWidth,
             height: 1380,
             background:
-              "radial-gradient(60% 60% at 50% 50%, hsla(270,60%,55%,0.06), transparent 100%)",
+              "radial-gradient(60% 60% at 50% 50%, hsl(var(--accent) / 0.07), transparent 100%)",
           }}
         />
       </m.div>

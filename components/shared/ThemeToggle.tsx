@@ -40,7 +40,8 @@ export function ThemeToggle({
     <div {...props} className={cn("flex items-center space-x-2", className)}>
       <Button
         variant="secondary"
-        className="border-border bg-card hover:bg-accent rounded-full border p-2 duration-200"
+        shape="square"
+        className="border-border bg-card hover:bg-accent border p-2 duration-200"
         onClick={toggleTheme}
         aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
       >

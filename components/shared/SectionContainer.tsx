@@ -3,20 +3,16 @@ import { m, useInView } from "framer-motion";
 import { useRef } from "react";
 
 interface SectionContainerProps {
-  id?: string;
-  title: string;
-  subtitle?: string;
-  children: React.ReactNode;
-  className?: string;
+  readonly id?: string;
+  readonly title: string;
+  readonly subtitle?: string;
+  readonly children: React.ReactNode;
+  readonly className?: string;
+  readonly action?: React.ReactNode; // optional right-aligned action (e.g., See all)
 }
 
-export default function SectionContainer({
-  id,
-  title,
-  subtitle,
-  children,
-  className,
-}: SectionContainerProps) {
+export default function SectionContainer(props: Readonly<SectionContainerProps>) {
+  const { id, title, subtitle, children, className, action } = props;
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -24,22 +20,28 @@ export default function SectionContainer({
     <section
       id={id}
       ref={ref}
-      className={cn("py-24 px-4 sm:px-6 lg:px-8", className)}
+      className={cn("py-[var(--sp-9)] px-4 sm:px-6 lg:px-8", className)}
     >
-      <div className="mx-auto max-w-7xl">
+      <div className="container">
+        {/** Header block */}
         <m.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.6 }}
-          className="mb-16 text-center"
+          transition={{ duration: 0.32, ease: [0.2, 0.8, 0.2, 1] }}
+          className={action ? "mb-12 flex flex-col gap-4 sm:mb-14 sm:flex-row sm:items-end sm:justify-between" : "mb-16 text-center"}
         >
-          <h2 className="text-gradient mb-4 text-4xl font-bold tracking-tight sm:text-5xl">
-            {title}
-          </h2>
-          {subtitle && (
-            <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-              {subtitle}
-            </p>
+          <div className={action ? "max-w-2xl" : undefined}>
+            <h2 className={action ? "mb-4 font-semibold tracking-tight text-3xl md:text-4xl" : "mb-6 font-semibold tracking-tight text-3xl md:text-5xl"}>{title}</h2>
+            {subtitle && (
+              <p className={action ? "text-base md:text-lg text-muted-foreground/90 readable-tight" : "mx-auto readable text-muted-foreground/90 text-base md:text-lg"}>
+                {subtitle}
+              </p>
+            )}
+          </div>
+          {action && (
+            <div className="shrink-0">
+              {action}
+            </div>
           )}
         </m.div>
         

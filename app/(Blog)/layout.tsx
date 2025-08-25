@@ -1,14 +1,12 @@
 import { BlogNavBar } from "@/components/shared/Navbar";
 
-export default function Layout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function Layout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <>
+    <div className="flex min-h-dvh flex-col bg-background text-foreground">
       <BlogNavBar />
-      <div className="mt-4 sm:-mt-8 md:-mt-12 lg:-mt-16 xl:-mt-16">
+      <main id="main-content" className="flex-1">
         {children}
-      </div>
-    </>
+      </main>
+    </div>
   );
 }

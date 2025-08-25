@@ -1,139 +1,266 @@
 @import 'tailwindcss';
 
-@config '../tailwind.config.ts';
 
 /*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
+  Tailwind v4 border-color compatibility for v3 defaults
 */
 @layer base {
-
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
+  :root *,
+  :root ::after,
+  :root ::before,
+  :root ::backdrop,
+  :root ::file-selector-button {
+    border-color: hsl(var(--border,210 15% 82% / 0.28));
+  }
+  .dark *,
+  .dark ::after,
+  .dark ::before,
+  .dark ::backdrop,
+  .dark ::file-selector-button {
+    border-color: hsl(var(--border,194 15% 5% / 0.32));
   }
 }
-  /* Reduced motion support for accessibility and animation performance */
-  @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
-  }
 
+/* Base reset and accessibility */
+@layer base {
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: var(--font-chivo);
+    color: hsl(var(--foreground));
+    background: hsl(var(--background));
+    line-height: var(--lh);
+  }
+  img, svg, video { max-width: 100%; height: auto; display: block; }
+  a { color: var(--link); text-decoration: none; }
+  a:hover, a:focus-visible {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: .08em;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Design tokens (roles, spacing, type, motion) */
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 210 12% 16%;
-    --popover: 0 0% 97%;
-    --popover-foreground: 210 12% 6%;
-    --card: 0 0% 93%;
-    --card-foreground: 210 12% 11%;
-    --primary: 194.91 82.56% 16.27;
-    /*220.9 39.3% 11%; */
-    --primary-foreground: 210 20% 98%;
-    --secondary: 210 3% 75%;
-    --secondary-foreground: 210 3% 15%;
-    --muted: 0 12% 90%;
-    --muted-foreground: 0 12% 30%;
-    --accent: 0 0% 85%;
-    --accent-foreground: 0 0% 25%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 20% 98%;
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 210 13% 21%;
-    --radius: 0.5rem;
-  }
+  /* Cool-tinted neutrals (blue-graphite, not pure gray) */
+  --gray-0:#0b0e12; --gray-1:#12161b; --gray-2:#171c22; --gray-3:#1f2530;
+  --gray-4:#2a303b; --gray-5:#3a4351; --gray-6:#566172; --gray-7:#8793a2;
+  --gray-8:#c3cddb; --gray-9:#f2f5f9;
 
+  /* Brand core: structural teal-green (replaces previous cyan/purple) */
+  --brand:      hsl(188 28% 34%);
+  --brand-600:  hsl(188 32% 42%);
+
+  /* Accent (subtle variant of brand, no purple) */
+  --accent:     hsl(188 20% 40%);
+
+  /* Roles (light) — cool whites, not stark */
+  --bg:#f8f6f2;
+  --bg-elev:#f5f3ed;   /* subtle cream tint for cards */
+  --bg-press:#f1ede6;  /* pressed/hover surfaces, light beige */
+  --fg:#11151a;
+  --fg-muted:#344153;
+  --fg-subtle:#6a7380;
+
+  --link: hsl(188 20% 22%);
+  --focus: hsl(188 85% 60%);
+
+  /* Semantics with off-standard hues (soft, not neon) */
+  --success: hsl(160 55% 40%); /* mint */
+  --warning: hsl(32 90% 54%);  /* amber */
+  --danger:  hsl(352 70% 52%); /* cherry-magenta */
+
+    /* Spacing */
+    --sp-1:.25rem; --sp-2:.5rem; --sp-3:.75rem; --sp-4:1rem; --sp-5:1.5rem;
+    --sp-6:2rem; --sp-7:3rem; --sp-8:4rem; --sp-9:6rem; --sp-10:8rem;
+
+  /* Radius */
+  --radius: 2px; /* legacy fallback */
+  /* Radius scale (use these instead of undefined --r-lg etc.) */
+  --r-0: 0px;
+  --r-1: 2px; /* micro */
+  --r-2: 4px; /* default small */
+  --r-3: 6px; /* medium (rare) */
+  --r-round: 999px; /* pill (avoid new usage) */
+
+  /* Typography scale (desktop first, clamp for display handled below) */
+  --fs-xs: 0.75rem;      /* 12 */
+  --fs-sm: 0.8125rem;    /* 13 */
+  --fs-base: 0.875rem;   /* 14 body */
+  --fs-md: 0.9375rem;    /* 15 */
+  --fs-lg: 1rem;         /* 16 */
+  --fs-xl: 1.25rem;      /* 20 */
+  --fs-2xl: 1.5rem;      /* 24 */
+  --fs-3xl: 1.875rem;    /* 30 */
+  --fs-display: clamp(2.25rem,3.6vw+1rem,3.5rem);
+  --fs-h1: var(--fs-display);
+  --fs-h2: clamp(1.9rem,2.4vw+1rem,2.6rem);
+  --fs-h3: clamp(1.45rem,1.6vw+1rem,2rem);
+  --fs-h4: 1.25rem;
+  --fs-h5: 1.125rem;
+  --fs-body: var(--fs-base);
+  --fs-sm: var(--fs-xs);
+
+  /* Line heights */
+  --lh-tight: 1.1;
+  --lh-snug: 1.2;
+  --lh: 1.45;
+  --lh-relaxed: 1.55;
+  --lh-loose: 1.7;
+
+  /* Shadow scale */
+  --sh-1: 0 1px 2px -1px hsl(var(--foreground) / 0.15), 0 2px 4px -2px hsl(var(--foreground) / 0.08);
+  --sh-2: 0 2px 6px -1px hsl(var(--foreground) / 0.18), 0 4px 12px -2px hsl(var(--foreground) / 0.12);
+  --sh-focus: 0 0 0 3px hsl(var(--primary) / 0.45);
+
+  /* Surfaces */
+  --surface-0: hsl(var(--background));
+  --surface-1: hsl(var(--card));
+  --surface-2: hsl(var(--card) / 0.9);
+  --surface-inset: hsl(var(--muted));
+
+  /* Border emphasis */
+  --border-subtle: var(--border);
+  --border-strong: 210 15% 55% / 0.35;
+
+  /* State variants */
+  --primary-hover: var(--primary);
+  --primary-active: 188 46% 28%;
+  --secondary-hover: 210 25% 88%;
+  --danger-hover: 352 70% 46%;
+
+  /* LIGHT THEME v2 (clean neutral canvas + contained teal accent) */
+    /* Previous tokens commented out above for reference. Aim: sharper hierarchy, less green wash, higher legibility */
+    --background: 210 40% 98%;           /* near-white with cool tint */
+    --foreground: 210 22% 18%;           /* ink */
+    --popover:   210 38% 99%;
+    --popover-foreground: 210 20% 20%;
+    --card:      210 30% 99%;            /* subtle elevation */
+    --card-foreground: 210 22% 20%;
+
+    /* Primary accent (teal – slightly clearer & more saturated for focus) */
+    --primary: 188 46% 34%;
+    --primary-foreground: 188 70% 92%;
+    --primary-solid: 188 46% 34%;
+    --primary-solid-hover: 188 48% 30%;
+    --primary-soft: 188 50% 92%; /* light tint used for soft actions */
+
+    /* Secondary (neutral control surface) */
+    --secondary: 210 25% 92%;
+    --secondary-foreground: 210 20% 28%;
+
+    /* Muted surfaces & text */
+    --muted: 210 24% 94%;
+    --muted-foreground: 210 10% 42%;
+
+    --accent: 188 30% 42%;
+    --accent-foreground: 188 70% 94%;
+
+    --destructive: 2 70% 48%;
+    --destructive-foreground: 0 0% 100%;
+
+  --border: 210 15% 82% / 0.18;
+    --input:  210 15% 82%;
+    --ring:   188 46% 34%;
+  }
+  /* Dark theme tokens switched via .dark class from next-themes */
   .dark {
-    --background: 210 12% 16%;
-    --foreground: 214 13% 90%;
-    --card: 210 12% 14%;
-    --card-foreground: 214 13% 95%;
-    --popover: 210 12% 13%;
-    --popover-foreground: 214 13% 100%;
-    --primary: 194.91 82.56% 38.24%;
-    /*210 20% 98%; */
-    --primary-foreground: 220.9 39.3% 11%;
-    --secondary: 214 3% 25%;
-    --secondary-foreground: 214 3% 85%;
-    --muted: 210 12% 20%;
-    --muted-foreground: 210 12% 70%;
-    --accent: 210 12% 31%;
-    --accent-foreground: 210 12% 91%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 20% 98%;
-    --border: 210 2% 21%;
-    --input: 210 2% 24%;
-    --ring: 214 13% 90%;
+    --background: 194 22% 16%; /* deepen for contrast */
+  --foreground: 134 20% 76%;
+  --card-foreground: 134 22% 78%;
+  --popover-foreground: 134 22% 78%;
+  --muted-foreground: 134 14% 58%;
+  --secondary-foreground: 134 24% 72%;
+  --accent-foreground: 194 65% 14%;
+  --link: hsl(194 20% 90%);
+/* Lighten navbar text in dark mode only */
+.dark .navbar, .dark .navbar a, .dark .navbar .nav-link {
+  color: hsl(134 12% 93%) !important;
+}
+    --popover: 194 20% 20%;
+    --popover-foreground: 134 22% 78%;
+
+    --primary: 156 35% 54%; /* slightly more chroma teal-green */
+    --primary-foreground: 194 65% 14%;
+    --primary-solid: 156 35% 54%;
+    --primary-solid-hover: 156 38% 48%;
+    --primary-soft: 156 28% 22%;
+  --primary-hover: 156 35% 50%;
+  --primary-active: 156 38% 42%;
+  --secondary-hover: 194 16% 28%;
+  --danger-hover: 2 66% 46%;
+
+  --sh-1: 0 1px 2px -1px hsl(var(--foreground) / 0.35), 0 2px 4px -2px hsl(var(--foreground) / 0.22);
+  --sh-2: 0 4px 10px -2px hsl(var(--foreground) / 0.4), 0 6px 18px -4px hsl(var(--foreground) / 0.35);
+  --sh-focus: 0 0 0 3px hsl(var(--primary) / 0.55);
+  --border-strong: 194 15% 40% / 0.42;
+
+    --secondary: 194 16% 30%;
+    --secondary-foreground: 134 24% 72%;
+
+    --muted: 194 18% 24%;
+    --muted-foreground: 134 14% 58%;
+
+    --accent: 156 35% 54%;
+    --accent-foreground: 194 65% 14%;
+
+    --destructive: 2 66% 52%;
+    --destructive-foreground: 0 0% 100%;
+
+  --border: 194 15% 5% / 0.12;
+    --input:  194 15% 32%;
+    --ring:   156 38% 48%;
   }
 }
 
-
-
-body {
-  font-family: var(--font-chivo);
+/* Tailwind color variables (HSL components) aligned to tokens */
+@layer base {
+  /* Tailwind color variables now inherit from updated tokens above; no duplicate root override needed */
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-ibm_plex_sans);
+/* Type defaults */
+@layer base {
+  h1,h2,h3 { letter-spacing: -.015em; }
+  h1 { font-size: var(--fs-h1); line-height: var(--lh-tight); letter-spacing:-.02em; }
+  h2 { font-size: var(--fs-h2); line-height: var(--lh-snug); letter-spacing:-.018em; }
+  p  { font-size: var(--fs-md); line-height: var(--lh-relaxed); }
+  @media (min-width: 768px) {
+    p { font-size: var(--fs-lg); }
+  }
+  small { font-size: var(--fs-sm); color: var(--fg-subtle); }
 }
 
-.portableText {
-  @apply text-lg leading-relaxed;
+/* Utilities */
+@layer utilities {
+  .container { max-width: 1200px; margin-inline: auto; padding-inline: clamp(1rem,4vw,2rem); }
+  .grid-flow { display: grid; gap: var(--sp-6); }
+  .prose { max-width: 72ch; }
+  .readable { max-width: 72ch; }
+  .readable-tight { max-width: 60ch; }
+  .heading-tight > h1, .heading-tight > h2 { letter-spacing:-.02em; }
+  .visually-hidden { position: absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
+  .ring-focus:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--focus); }
+  .stack > * + * { margin-top: var(--sp-4); }
+  .cluster { display:flex; gap: var(--sp-3); align-items:center; flex-wrap:wrap; }
+  .center { display:grid; place-items:center; }
+  [data-progress] .progress-bar { transform: scaleX(var(--progress,0)); }
+  /* Line clamp utilities for controlled excerpts */
+  .clamp-1{ display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden; line-clamp:1; }
+  .clamp-2{ display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; line-clamp:2; }
 }
 
-.portableText p,
-.portableText ul,
-.portableText ol,
-.portableText blockquote {
-  @apply my-6;
-}
-
-.portableText h1 {
-  @apply mb-4 mt-12 text-4xl leading-snug font-bold;
-}
-
-.portableText h2 {
-  @apply mb-4 mt-12 text-3xl leading-snug font-bold;
-}
-
-.portableText h3 {
-  @apply mb-4 mt-8 text-2xl leading-snug font-bold;
-}
-
-.portableText h4 {
-  @apply mb-4 mt-8 text-xl leading-snug font-bold;
-}
-
-.portableText h5 {
-  @apply mb-4 mt-8 text-lg leading-snug font-bold;
-}
-
-.portableText a {
-  @apply text-blue-500 underline;
-}
-
-.portableText a:hover {
-  @apply text-blue-800;
-}
-
+/* Keep existing custom classes (some will be toned down in later phases) */
 .text-gradient {
   background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary)) 40%, hsl(var(--accent)));
   -webkit-background-clip: text;
@@ -147,12 +274,28 @@ h6 {
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
-
 .dark .glass-effect {
   background: rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .bg-noise {
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-image: url("/images/bg-noise.png");
 }
+
+/* Portable text styles preserved */
+/* PortableText refined rhythm */
+.portableText { font-size: var(--fs-body); line-height: var(--lh-loose); }
+.portableText p, .portableText ul, .portableText ol, .portableText blockquote, .portableText pre { margin-block: var(--sp-5); }
+.portableText h1, .portableText h2, .portableText h3, .portableText h4, .portableText h5 { font-weight: 600; line-height: var(--lh-snug); letter-spacing:-.015em; }
+.portableText h1 { font-size: clamp(2.2rem,3.6vw+1rem,3.6rem); margin-top: var(--sp-9); margin-bottom: var(--sp-4); }
+.portableText h2 { font-size: clamp(1.8rem,2.4vw+1rem,2.6rem); margin-top: var(--sp-8); margin-bottom: var(--sp-3); }
+.portableText h3 { font-size: clamp(1.45rem,1.6vw+1rem,2rem); margin-top: var(--sp-7); margin-bottom: var(--sp-3); }
+.portableText h4 { font-size: 1.25rem; margin-top: var(--sp-6); margin-bottom: var(--sp-2); }
+.portableText h5 { font-size: 1.125rem; margin-top: var(--sp-6); margin-bottom: var(--sp-2); }
+.portableText a { color: hsl(var(--primary)); text-decoration: underline; text-underline-offset: 2px; }
+.portableText a:hover { color: hsl(var(--primary)); opacity:.85; }
+.dark .portableText a { color: hsl(var(--primary)); }
+.portableText blockquote { padding: var(--sp-4) var(--sp-5); border-inline-start: 4px solid hsl(var(--primary)); background: hsl(var(--card)); border-radius: var(--r-md); font-style: italic; }
+.portableText code { font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace; font-size: .9em; background: hsl(var(--secondary)); padding: .15em .45em; border-radius: .4em; }
+.dark .portableText blockquote { background: hsl(var(--card)); }

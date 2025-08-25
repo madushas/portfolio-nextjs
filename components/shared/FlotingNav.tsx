@@ -53,7 +53,7 @@ export default function FloatingNav() {
           exit={{ opacity: 0, y: -20 }}
           className="fixed top-4 left-1/2 z-50 -translate-x-1/2"
         >
-          <div className="glass-effect flex items-center space-x-1 rounded-full px-4 py-2">
+          <div className="flex items-center space-x-1 rounded-full px-4 py-2 border border-border bg-background shadow-lg">
             {navItems.map((item) => (
               <a
                 key={item.name}

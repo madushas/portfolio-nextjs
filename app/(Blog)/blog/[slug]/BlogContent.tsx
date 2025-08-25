@@ -1,12 +1,15 @@
+
+
 import { SanityImage } from "@/components/shared/SanityImage";
 import { client } from "@/sanity/lib/client";
 import { urlForImage } from "@/sanity/lib/image";
 import { GetPostBySlug } from "@/sanity/queries";
 import { format } from "date-fns";
 import { PortableText, PortableTextReactComponents } from "next-sanity";
-import { SiFacebook, SiLinkedin, SiX } from "react-icons/si";
+import { SiLinkedin, SiX } from "react-icons/si";
 import Link from "next/link";
 import Image from "next/image";
+
 
 export const runtime = "edge";
 
@@ -48,13 +51,27 @@ const conversions: Partial<PortableTextReactComponents> | undefined = {
   },
 };
 
-const dateToString = (date: string) => {
-  return format(new Date(date), "MMMM dd, yyyy");
-};
+const dateToString = (date: string) => format(new Date(date), "MMMM dd, yyyy");
 
-export default async function BlogContent({
-  slug,
-}: Readonly<{ slug: string }>) {
+function estimateReadingTime(body: any): number {
+  // naive word count across plain text blocks
+  try {
+    const text = (body || [])
+      .filter((b: any) => b._type === 'block')
+      .map((b: any) => b.children?.map((c: any) => c.text).join(' ') || '')
+      .join(' ');
+    const words = text.trim().split(/\s+/).filter(Boolean).length;
+    return Math.max(1, Math.round(words / 220));
+  } catch {
+    return 3;
+  }
+}
+
+
+
+import BlogContentWrapper from "./BlogContentWrapper";
+
+export default async function BlogContent({ slug }: { slug: string }) {
   const post = await getPostFromSanity(slug);
   if (!post) {
     return (
@@ -68,111 +85,5 @@ export default async function BlogContent({
       </section>
     );
   }
-  const { title, description, author, date, imageURL, content } = post;
-  return (
-    <article id="main-content">
-      <section className="relative">
-        <div className="container mx-auto p-6 md:px-12 lg:px-24 xl:px-32">
-          <div className="bg-popover absolute top-0 right-0 left-0 z-0 h-full"></div>
-          <div className="relative top-8 z-2">
-            <div className="col-span-12 mt-5 mb-6 w-full lg:col-span-10 lg:col-start-2 lg:mt-10 lg:mb-8 lg:w-2/3 xl:col-span-8 xl:col-start-2">
-              <ul className="mb-3 inline-block list-none">
-                <li className="mr-3 inline-block">
-                  <Link href="/blog" className="text-popover-foreground">
-                    Blog
-                  </Link>
-                </li>
-              </ul>
-              <h1 className="mb-3 text-3xl font-semibold text-slate-900 lg:text-5xl dark:text-slate-100">
-                {title}
-              </h1>
-              <p className="text-lg">{description}</p>
-            </div>
-            <div className="lg:col-span-10 lg:col-start-2">
-              <div className="relative top-10 z-10">
-                <Image
-                  src={imageURL}
-                  width={1600}
-                  height={850}
-                  alt="Blog post hero image"
-                  className="aspect-video rounded-md object-cover"
-                  priority
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
-                  placeholder="blur"
-                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="container mx-auto p-6 md:px-12 lg:px-24 xl:px-32">
-        <div className="pt-8">
-          <div className="col-span-12 lg:col-span-10 lg:col-start-2">
-            <div className="flex flex-wrap items-center pb-1">
-              <div className="flex flex-wrap">By {author}</div>
-              <time
-                dateTime={date}
-                className="text-mono mb-3 ml-auto block min-h-6 border-1 pl-7 text-slate-800 dark:text-slate-200"
-              >
-                {dateToString(date)}
-              </time>
-            </div>
-            <div className="border-2 border-t border-slate-200 dark:border-slate-800"></div>
-          </div>
-        </div>
-      </section>
-
-      <div className="container mx-auto p-4 md:px-12 lg:px-24 xl:px-32">
-        <div className="flex flex-col md:flex-row">
-          <section className="order-2 col-span-12 px-2 md:order-1 md:col-span-8 lg:col-span-7">
-            <div className="portableText">
-              <PortableText value={content} components={conversions} />
-            </div>
-          </section>
-
-          <div className="order-1 col-span-12 px-6 md:order-2 md:col-span-4 lg:col-span-3">
-            <ul className="mt-4 flex list-none lg:flex-col">
-              <li className="mr-4 mb-2 lg:mr-0">
-                <Link
-                  href={`https://x.com/share?text=${post.title}&amp;url=${"https://madusha.dev/blog/" + post.slug}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="border-border bg-card hover:bg-secondary flex items-center justify-center rounded-full border p-2"
-                  aria-label="Share on X"
-                >
-                  <SiX />
-                </Link>
-              </li>
-              <li className="mr-4 mb-4 lg:mr-0">
-                <Link
-                  href={`https://www.facebook.com/sharer/sharer.php?u=${"https://madusha.dev/blog/" + post.slug}&amp;t=${post.title}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="border-border bg-card hover:bg-secondary flex items-center justify-center rounded-full border p-2"
-                  aria-label="Share on LinkedIn"
-                >
-                  <SiFacebook />
-                </Link>
-              </li>
-              <li className="mr-4 mb-4 lg:mr-0">
-                <Link
-                  href={encodeURI(
-                    `https://www.linkedin.com/shareArticle?url=${"https://madusha.dev/blog/" + post.slug}%2F&amp;title=${post.title}`,
-                  )}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="border-border bg-card hover:bg-secondary flex items-center justify-center rounded-full border p-2"
-                  aria-label="Share on LinkedIn"
-                >
-                  <SiLinkedin />
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </article>
-  );
+  return <BlogContentWrapper post={post} />;
 }

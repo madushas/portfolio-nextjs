@@ -7,13 +7,18 @@ import {
 } from "next-themes";
 import { useAppStore } from "@/lib/stores/useAppStore";
 
-export function ThemeProvider({
-  children,
-  ...props
-}: Readonly<ThemeProviderProps>) {
-  const theme = useAppStore((state) => state.theme);
+export function ThemeProvider({ children, ...props }: Readonly<ThemeProviderProps>) {
+  const stored = useAppStore((s) => s.theme);
+  // Map persisted 'system' to undefined so next-themes can resolve system preference.
+  const defaultTheme = stored === 'system' ? undefined : stored;
   return (
-    <NextThemesProvider attribute="class" defaultTheme={theme} {...props}>
+    <NextThemesProvider
+      attribute="class"
+      defaultTheme={defaultTheme}
+      enableSystem
+      disableTransitionOnChange
+      {...props}
+    >
       {children}
     </NextThemesProvider>
   );

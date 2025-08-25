@@ -9,6 +9,8 @@ import TopArticles from "./TopArticles";
 import ContactMe from "./ContactMe";
 import React, { Suspense } from "react";
 import ExperienceSection from "./Experince";
+import Proof from "./Proof";
+import CaseStudy from "./CaseStudy";
 
 // Dynamic import for heavy components
 const Spotlight = React.lazy(() => import("../ui/animated-background"));
@@ -20,7 +22,9 @@ export default function HomePage() {
         <Spotlight />
       </Suspense>
       <Hero id="home" />
+      <Proof id="proof" />
       <Services id="services" />
+      <CaseStudy id="casestudy" />
       <TechStack id="techstack" />
       <About id="about" />
       <ExperienceSection id="experience" />

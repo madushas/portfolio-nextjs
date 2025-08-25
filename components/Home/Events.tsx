@@ -43,7 +43,7 @@ const Card = ({ card }: { card: DeveloperEventType }) => {
         className="absolute inset-0 z-0 bg-cover bg-center transition-transform duration-300 group-hover:scale-110"
       ></div>
       <div className="absolute inset-0 z-10 hidden w-full place-content-stretch transition-transform duration-300 group-hover:grid">
-        <div className="from-card text-accent flex flex-col bg-linear-to-br to-white/0 p-8 font-black uppercase backdrop-blur-lg">
+        <div className="from-card text-accent flex flex-col bg-linear-to-br to-white/0 p-8 font-black uppercase">
           <h3 className="grow text-3xl font-semibold text-white">
             {card.title}
           </h3>

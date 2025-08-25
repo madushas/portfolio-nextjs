@@ -2,46 +2,46 @@ import { Post } from "@/sanity/schema";
 import PostThumbnail from "./BlogThumbnail";
 import Fallback from "./PostFallBack";
 
-export default function FeaturedBlog({
-  blogs,
-  loading,
-}: Readonly<{ blogs: Post[]; loading: boolean }>) {
+export default function FeaturedBlog({ blogs, loading }: Readonly<{ blogs: Post[]; loading: boolean }>) {
+  const hasPosts = !loading && blogs.length > 0;
+
+  const featured = hasPosts ? blogs[0] : null;
+  const secondary = hasPosts ? blogs.slice(1, 3) : [];
+
   return (
-    <div className="bg-card rounded-3xl p-8">
-      <h2 className="mb-4 py-8 text-base font-medium tracking-wider uppercase">
-        Featured Posts
-      </h2>
-      <div className="grid grid-cols-1 gap-10 lg:grid-cols-9">
-        {!loading && blogs.length > 0 ? (
-          [blogs[0]].map((blog, i) => (
-            <PostThumbnail
-              type="featured"
-              key={blog.slug.current}
-              post={blog}
-              className="col-span-1 row-span-1 rounded-lg lg:col-span-5 lg:row-span-2"
-            />
-          ))
+  <div className="space-y-8 md:space-y-12">
+      {/* Featured full-width for clearer hierarchy */}
+      <div>
+        {featured ? (
+          <PostThumbnail type="featured" post={featured} />
         ) : (
-          <div className="bg-card/70 col-span-1 row-span-1 flex grow animate-pulse items-center justify-center rounded-lg px-4 py-16 lg:col-span-5 lg:row-span-2">
+          <div className="flex min-h-[240px] items-center justify-center rounded-[var(--r-2)] border border-border/50 bg-card p-8">
             <Fallback isLoading={loading} />
           </div>
         )}
-        {!loading && blogs.length > 0 ? (
-          blogs
-            .slice(1, 3)
-            .map((blog, i) => (
+      </div>
+
+      {/* Two-up secondary posts side-by-side to reduce vertical scanning cost */}
+  <div className="grid gap-6 md:grid-cols-2">
+        {secondary.length > 0
+          ? secondary.map((blog) => (
               <PostThumbnail
                 type="highlighted"
-                key={blog.slug.current}
+                  key={blog.slug?.current || blog.title}
                 post={blog}
-                className="col-span-1 rounded-lg lg:col-span-4"
+                className="h-full"
               />
             ))
-        ) : (
-          <div className="bg-card/70 col-span-1 flex grow animate-pulse items-center justify-center rounded-lg px-4 py-16 lg:col-span-3">
-            <Fallback isLoading={loading} />
-          </div>
-        )}
+          : (
+            <>
+              <div key="featured-skeleton-1" className="flex min-h-[180px] items-center justify-center rounded-[var(--r-2)] border border-border/50 bg-card p-6" data-skeleton="featured-1">
+                <Fallback isLoading={loading} />
+              </div>
+              <div key="featured-skeleton-2" className="flex min-h-[180px] items-center justify-center rounded-[var(--r-2)] border border-border/50 bg-card p-6" data-skeleton="featured-2">
+                <Fallback isLoading={loading} />
+              </div>
+            </>
+          )}
       </div>
     </div>
   );
